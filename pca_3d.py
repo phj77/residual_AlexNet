@@ -22,7 +22,7 @@ test_dataset = torchvision.datasets.CIFAR10(root='./data', train=False, download
 test_loader = DataLoader(test_dataset, batch_size=100, shuffle=False, drop_last=False, pin_memory=True, num_workers=2)
 
 # Load model
-model = AlexNet_SC3_BN(num_classes=10).to(device)
+model = AlexNet_SC_BN(num_classes=10).to(device)
 model.load_state_dict(torch.load('./model_weights/alexnet_cifar10_skipconnection_BN_1.pth', weights_only=True))
 model.eval()
 

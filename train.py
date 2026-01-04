@@ -11,7 +11,6 @@ from torch.utils.data import Subset
 
 if __name__ == "__main__":
     #hyperparameter###############################################
-    #model = adam
     batch = 250
     learning_rate = 0.001
     epoch = 30
@@ -22,6 +21,13 @@ if __name__ == "__main__":
 
     #device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+    #setup model
+    #Alexnet -> original AlexNet
+    #Alexnet_BN -> AlexNet with Batch normalization
+    #Alexnet_SC_BN -> skip connection with Batch normalization
+    model = AlexNet_SC_BN(num_classes=10).to(device)
+
 
     #reproducibility
     torch.manual_seed(123)
@@ -58,12 +64,7 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_dataset, batch_size=batch, shuffle=True, drop_last=True, pin_memory=True, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=batch, shuffle=False, drop_last=False, pin_memory=True, num_workers=2)
 
-    #setup model
-    #Alexnet -> skip connection 없음
-    #Alexnet_SC -> skip connection
-    model = AlexNet_SC3_BN(num_classes=10).to(device)
-    #model = alexnet(num_classes=10).to(device)
-
+    
     print(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
