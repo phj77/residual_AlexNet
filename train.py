@@ -14,11 +14,11 @@ if __name__ == "__main__":
     #model = adam
     batch = 250
     learning_rate = 0.001
-    epoch = 25
+    epoch = 30
     ##############################################################
 
     #model_dir
-    model_dir = "./model_weights/alexnet_cifar10_skipConnection2_1.pth"
+    model_dir = "./model_weights/alexnet_cifar10_skipconnection_BN_1.pth"
 
     #device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     #setup model
     #Alexnet -> skip connection 없음
     #Alexnet_SC -> skip connection
-    model = AlexNet_SC2(num_classes=10).to(device)
+    model = AlexNet_SC3_BN(num_classes=10).to(device)
     #model = alexnet(num_classes=10).to(device)
 
     print(model)
@@ -112,12 +112,18 @@ if __name__ == "__main__":
     val_losses = []  
 
     #training
+    min_val_loss = 100
     for epo in range(epoch):
         start_time = time.time()
 
         train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, device)
 
         val_loss, val_acc = validate(model, val_loader, device)
+
+        if val_loss < min_val_loss:
+            min_val_loss = val_loss
+            torch.save(model.state_dict(), model_dir)
+            print(f'Model saved at epoch {epo + 1}')
 
         train_accuracies.append(train_acc)
         val_accuracies.append(val_acc)
@@ -154,8 +160,4 @@ if __name__ == "__main__":
     plt.grid()
     plt.tight_layout()
     plt.show()
-
-    # Save model
-    torch.save(model.state_dict(), model_dir)
-    print("Model saved.pth")
-
+    print("training over")

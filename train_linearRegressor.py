@@ -10,6 +10,8 @@ from torch.utils.data.dataloader import DataLoader
 from torch.utils.data import random_split,Subset
 from sklearn.metrics import classification_report, confusion_matrix
 
+# feature extractor는 마지막에 classirier를 사용한 Alexnet의 것을 그대로 사용하고, linear regressor만 훈련한다.
+
 if __name__ == "__main__":
     #hyperparameter###############################################
     #model = adam

@@ -49,7 +49,7 @@ if __name__ == "__main__":
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     #model dir
-    model_dir = "./model_weights/alexnet_cifar10_skipConnection2_1.pth"
+    model_dir = "./model_weights/alexnet_cifar10_2_BN.pth"
 
     # Load test dataset
     val_test_trans = transforms.Compose([
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=100, shuffle=False, drop_last=False, pin_memory=True, num_workers=2)
 
     # Load model
-    model = AlexNet_SC2(num_classes=10).to(device)
+    model = AlexNet_BN(num_classes=10).to(device)
     model.load_state_dict(torch.load(model_dir))  # 저장된 모델 가중치를 불러옴
     print("Model loaded successfully.")
 
